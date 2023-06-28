@@ -81,12 +81,17 @@ exports.signUp = async (req,res) =>{
 exports.logIn = async(req,res) =>{
 
 
-    const {email,password} = req.body;
+
+    try{
+
+
+
+        const {email,password} = req.body;
 
     const existing = await User.find({email:email});
 
     if(!existing){
-        res.status(400).json({
+        return res.status(400).json({
             success:false,
             message:"user doesnot exist"
         })
@@ -118,22 +123,44 @@ exports.logIn = async(req,res) =>{
          token = jwt.sign(payload,process.env.JWT_SECRET,{
             expiresIn:"24h"
         })
+
+
+
+
+
+        const options = {
+            expires : new Date(Date.now() + 2*60*60*1000),
+            httpOnly:true
+        }
+    
+        return  res.cookie("token",token,options).status(200).json({
+            success:true,
+            message:"login successful",
+            user,
+            token
+        })
+        
+    }else{
+
+        return res.status(400).json({
+            success:false,
+            message:"check your password"
+        })
     }
     
 
-    const options = {
-        expires : new Date(Date.now() + 2*60*60*1000),
-        httpOnly:true
+
+
+    }catch(error){
+
+        res.status(400).json({
+            success:false,
+            message:"login failed"
+        })
+
     }
 
-    res.cookie("token",token,options).status(200).json({
-        success:true,
-        message:"login successful",
-        user,
-        token
-    })
     
-
 
 }
 
