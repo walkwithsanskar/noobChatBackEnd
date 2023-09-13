@@ -38,7 +38,8 @@ const server = app.listen(process.env.PORT , ()=>{
 const io = require('socket.io')(server,{
   
     cors:{
-        origin:["https://noobchatfrontend.onrender.com"],
+        // origin:["https://noobchatfrontend.onrender.com"],
+	    origin:"*",
 	     methods: ["GET", "POST"]
     }
 });
