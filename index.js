@@ -16,7 +16,7 @@ app.use(cookieParser())
 
 app.use(
 	cors({
-		origin:["https://noobchatfrontend.onrender.com"],
+		origin:["https://noobchatfrontend.onrender.com","*"],
 		credentials:true,
 	})
 );
